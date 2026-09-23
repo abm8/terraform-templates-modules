@@ -37,11 +37,7 @@ data "akamai_property_rules_builder" "rule_default" {
 
     }
 
-    # NOTE: verify this block's exact shape against the akamai_property_rules_builder
-    # schema for your provider version -- the upstream template hardcoded a full
-    # "value" object (id/name/description/created_date/products) as returned by
-    # `terraform import`. Here cpcode_id/cpcode_name come from the akamai_cp_code
-    # resource created in the parent module instead of an existing CP code.
+    ### CP code (created by parent module)
     behavior {
       cp_code {
         enable_default_content_provider_code = false

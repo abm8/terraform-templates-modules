@@ -3,11 +3,11 @@
 variable "etls" {
   description = "Whether the property uses Enhanced TLS (is_secure on the default rule)."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "default_origin" {
-  description = "Origin hostname AMD will fetch content from."
+  description = "Origin hostname from where AMD will fetch the content."
   type        = string
 }
 
@@ -58,8 +58,8 @@ variable "cpcode_name" {
   type        = string
 }
 
-### AMD-specific behaviors ############################################
 
+### AMD-specific behaviors ############################################
 variable "segmented_media_optimization_behavior" {
   description = "Segmented media optimization mode: ON_DEMAND or LIVE."
   type        = string
@@ -193,8 +193,8 @@ variable "hls_media_encryption" {
   default     = false
 }
 
-### Debug ##############################################################
 
+### Debug ##############################################################
 variable "enable_debug" {
   description = "Enable the enhanced_debug behavior. Off by default -- avoid baking a live debug key into every property."
   type        = bool
@@ -213,8 +213,8 @@ variable "debug_key" {
   }
 }
 
-### CORS policy (child rule) ###########################################
 
+### CORS policy (child rule) ###########################################
 variable "enable_cors_policy" {
   description = "Whether to attach the default CORS policy child rule."
   type        = bool

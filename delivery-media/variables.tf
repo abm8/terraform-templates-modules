@@ -72,7 +72,7 @@ variable "hostnames" {
 variable "edge_hostname_type" {
   description = "Edge hostname mode: SBD (Secure By Default, no cert needed), EDGESUITE (aka Freeflow, <hostname>.edgesuite.net), EDGEKEY (aka ESSL, <hostname>.edgekey.net), or AKAMAIZED_HOSTNAME (<label>.akamaized.net, hostname and edge hostname are identical)."
   type        = string
-  default     = "SBD"
+  default     = "AKAMAIZED_HOSTNAME"
 
   validation {
     condition     = contains(["SBD", "EDGESUITE", "EDGEKEY", "AKAMAIZED_HOSTNAME"], var.edge_hostname_type)
