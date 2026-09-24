@@ -4,7 +4,7 @@
  * Renders the default rule tree for an Adaptive Media Delivery property:
  * origin config, CP code, AMD-specific behaviors (segmented media
  * optimization, content characteristics, throughput optimization, HTTP/3,
- * optional debug), plus an optional CORS policy child rule.
+ * optional debug), plus the default CORS policy child rule.
  */
 
 data "akamai_property_rules_builder" "rule_default" {
@@ -130,10 +130,10 @@ data "akamai_property_rules_builder" "rule_default" {
       }
     }
 
-    children = compact(concat(
+    children = concat(
       length(var.additional_origins) > 0 ? [data.akamai_property_rules_builder.rule_additional_origins[0].json] : [],
-      var.enable_cors_policy ? [data.akamai_property_rules_builder.rule_cors_policy[0].json] : [],
-    ))
+      [data.akamai_property_rules_builder.rule_cors_policy.json],
+    )
   }
 }
 

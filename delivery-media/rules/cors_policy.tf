@@ -1,6 +1,4 @@
 data "akamai_property_rules_builder" "rule_cors_policy" {
-  count = var.enable_cors_policy ? 1 : 0
-
   rules_v2026_02_16 {
     name                  = "Default CORS Policy"
     criteria_must_satisfy = "all"
@@ -9,7 +7,7 @@ data "akamai_property_rules_builder" "rule_cors_policy" {
       modify_outgoing_response_header {
         action                      = "MODIFY"
         avoid_duplicate_headers     = false
-        new_header_value            = var.cors_allow_origin
+        new_header_value            = "*"
         standard_modify_header_name = "ACCESS_CONTROL_ALLOW_ORIGIN"
       }
     }
@@ -17,7 +15,7 @@ data "akamai_property_rules_builder" "rule_cors_policy" {
       modify_outgoing_response_header {
         action                      = "MODIFY"
         avoid_duplicate_headers     = false
-        new_header_value            = var.cors_allow_methods
+        new_header_value            = "GET,POST,OPTIONS"
         standard_modify_header_name = "ACCESS_CONTROL_ALLOW_METHODS"
       }
     }
@@ -25,7 +23,7 @@ data "akamai_property_rules_builder" "rule_cors_policy" {
       modify_outgoing_response_header {
         action                      = "MODIFY"
         avoid_duplicate_headers     = false
-        new_header_value            = var.cors_allow_headers
+        new_header_value            = "origin,range,hdntl,hdnts,CMCD-Request,CMCD-Object,CMCD-Status,CMCD-Session"
         standard_modify_header_name = "ACCESS_CONTROL_ALLOW_HEADERS"
       }
     }
@@ -33,7 +31,7 @@ data "akamai_property_rules_builder" "rule_cors_policy" {
       modify_outgoing_response_header {
         action                      = "MODIFY"
         avoid_duplicate_headers     = false
-        new_header_value            = var.cors_expose_headers
+        new_header_value            = "Server,range,hdntl,hdnts,Akamai-Mon-Iucid-Ing,Akamai-Mon-Iucid-Del,Akamai-Request-BC"
         standard_modify_header_name = "ACCESS_CONTROL_EXPOSE_HEADERS"
       }
     }
@@ -41,7 +39,7 @@ data "akamai_property_rules_builder" "rule_cors_policy" {
       modify_outgoing_response_header {
         action                      = "MODIFY"
         avoid_duplicate_headers     = false
-        new_header_value            = var.cors_allow_credentials
+        new_header_value            = "true"
         standard_modify_header_name = "ACCESS_CONTROL_ALLOW_CREDENTIALS"
       }
     }
@@ -49,7 +47,7 @@ data "akamai_property_rules_builder" "rule_cors_policy" {
       modify_outgoing_response_header {
         action                      = "MODIFY"
         avoid_duplicate_headers     = false
-        new_header_value            = var.cors_max_age
+        new_header_value            = "86400"
         standard_modify_header_name = "ACCESS_CONTROL_MAX_AGE"
       }
     }

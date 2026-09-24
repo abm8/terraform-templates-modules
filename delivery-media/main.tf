@@ -150,13 +150,6 @@ module "rules" {
   enable_debug = var.enable_debug
   debug_key    = local.effective_debug_key
 
-  enable_cors_policy     = var.enable_cors_policy
-  cors_allow_origin      = var.cors_allow_origin
-  cors_allow_methods     = var.cors_allow_methods
-  cors_allow_headers     = var.cors_allow_headers
-  cors_expose_headers    = var.cors_expose_headers
-  cors_allow_credentials = var.cors_allow_credentials
-  cors_max_age           = var.cors_max_age
 }
 
 resource "akamai_property" "this" {

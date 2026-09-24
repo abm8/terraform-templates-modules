@@ -28,29 +28,22 @@ module "example" {
   	 activation_to_production_exists  = <bool> | default: false
   	 activation_to_staging_exists  = <bool> | default: false
   	 additional_origins  = <map(object({
-    origin_name         = string
-    forward_host_header = string
-    hostname_match      = list(string)
-    path_match          = list(string)
-  }))> | default: {}
+	    origin_name         = string
+	    forward_host_header = string
+	    hostname_match      = list(string)
+	    path_match          = list(string)
+	  }))> | default: {}
   	 cache_key_query_params_behavior  = <string> | default: "IGNORE_ALL"
   	 certificate_id  = <number> | default: null
   	 client_country  = <string> | default: "UNKNOWN"
   	 content_catalog_size  = <string> | default: "UNKNOWN"
   	 content_popularity_distribution  = <string> | default: "UNKNOWN"
   	 content_type  = <string> | default: "HD"
-  	 cors_allow_credentials  = <string> | default: "true"
-  	 cors_allow_headers  = <string> | default: "origin,range,hdntl,hdnts,CMCD-Request,CMCD-Object,CMCD-Status,CMCD-Session"
-  	 cors_allow_methods  = <string> | default: "GET,POST,OPTIONS"
-  	 cors_allow_origin  = <string> | default: "*"
-  	 cors_expose_headers  = <string> | default: "Server,range,hdntl,hdnts,Akamai-Mon-Iucid-Ing,Akamai-Mon-Iucid-Del,Akamai-Request-BC"
-  	 cors_max_age  = <string> | default: "86400"
   	 cpcode_name  = <string> | default: null
   	 customer_email  = <string> | default: null
   	 dash_media_encryption  = <bool> | default: false
   	 debug_key  = <string> | default: null
-  	 edge_hostname_type  = <string> | default: "SBD"
-  	 enable_cors_policy  = <bool> | default: true
+	 edge_hostname_type  = <string> | default: "AKAMAIZED_HOSTNAME"
   	 enable_dash  = <bool> | default: true
   	 enable_debug  = <bool> | default: true
   	 enable_dynamic_throughput_optimization  = <bool> | default: true
@@ -81,7 +74,7 @@ module "example" {
   	 verification_mode  = <string> | default: "PLATFORM_SETTINGS"
   	 version_notes  = <string> | default: "Initial Config"
 }
- ```
+```
 
 ## Requirements
 
@@ -114,7 +107,7 @@ module "example" {
 | ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_activation_contacts"></a> [activation\_contacts](#input\_activation\_contacts) | Email addresses notified on activation. | `list(string)` | n/a | yes |
 | <a name="input_contract_id"></a> [contract\_id](#input\_contract\_id) | Akamai contract ID (e.g. ctr\_1-AB123). | `string` | n/a | yes |
-| <a name="input_default_origin"></a> [default\_origin](#input\_default\_origin) | n/a | `string` | n/a | yes |
+| <a name="input_default_origin"></a> [default\_origin](#input\_default\_origin) | Origin hostname from where AMD fetches content. | `string` | n/a | yes |
 | <a name="input_group_id"></a> [group\_id](#input\_group\_id) | Akamai group ID (e.g. grp\_12345). | `string` | n/a | yes |
 | <a name="input_hostnames"></a> [hostnames](#input\_hostnames) | List of hostnames, e.g. ["www.example.com", "media.example.com"].<br/>For SBD with etls=true, Akamai provisions the edgekey.net hostname<br/>automatically. For SBD with etls=false, EDGESUITE, and EDGEKEY, each<br/>entry is your own domain and its edge hostname is created as needed. For<br/>AKAMAIZED\_HOSTNAME, each entry is just a label (e.g. "abm-template-test")<br/>-- the .akamaized.net suffix is appended automatically and used as both<br/>cname\_from and cname\_to. | `list(string)` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Property name. | `string` | n/a | yes |
@@ -124,52 +117,45 @@ module "example" {
 | <a name="input_activation_to_production_exists"></a> [activation\_to\_production\_exists](#input\_activation\_to\_production\_exists) | Do not modify. Preserves the existing production activation when activate\_to\_production is false. | `bool` | `false` | no |
 | <a name="input_activation_to_staging_exists"></a> [activation\_to\_staging\_exists](#input\_activation\_to\_staging\_exists) | Do not modify. Preserves the existing staging activation when activate\_to\_staging is false. | `bool` | `false` | no |
 | <a name="input_additional_origins"></a> [additional\_origins](#input\_additional\_origins) | Optional additional origins selected by hostname and/or path criteria. | <pre>map(object({<br/>    origin_name         = string<br/>    forward_host_header = string<br/>    hostname_match      = list(string)<br/>    path_match          = list(string)<br/>  }))</pre> | `{}` | no |
-| <a name="input_cache_key_query_params_behavior"></a> [cache\_key\_query\_params\_behavior](#input\_cache\_key\_query\_params\_behavior) | n/a | `string` | `"IGNORE_ALL"` | no |
+| <a name="input_cache_key_query_params_behavior"></a> [cache\_key\_query\_params\_behavior](#input\_cache\_key\_query\_params\_behavior) | How query parameters are handled in the cache key. | `string` | `"IGNORE_ALL"` | no |
 | <a name="input_certificate_id"></a> [certificate\_id](#input\_certificate\_id) | CPS certificate enrollment ID. Required only when edge\_hostname\_type is EDGEKEY. | `number` | `null` | no |
-| <a name="input_client_country"></a> [client\_country](#input\_client\_country) | n/a | `string` | `"UNKNOWN"` | no |
-| <a name="input_content_catalog_size"></a> [content\_catalog\_size](#input\_content\_catalog\_size) | n/a | `string` | `"UNKNOWN"` | no |
-| <a name="input_content_popularity_distribution"></a> [content\_popularity\_distribution](#input\_content\_popularity\_distribution) | n/a | `string` | `"UNKNOWN"` | no |
-| <a name="input_content_type"></a> [content\_type](#input\_content\_type) | n/a | `string` | `"HD"` | no |
-| <a name="input_cors_allow_credentials"></a> [cors\_allow\_credentials](#input\_cors\_allow\_credentials) | n/a | `string` | `"true"` | no |
-| <a name="input_cors_allow_headers"></a> [cors\_allow\_headers](#input\_cors\_allow\_headers) | n/a | `string` | `"origin,range,hdntl,hdnts,CMCD-Request,CMCD-Object,CMCD-Status,CMCD-Session"` | no |
-| <a name="input_cors_allow_methods"></a> [cors\_allow\_methods](#input\_cors\_allow\_methods) | n/a | `string` | `"GET,POST,OPTIONS"` | no |
-| <a name="input_cors_allow_origin"></a> [cors\_allow\_origin](#input\_cors\_allow\_origin) | n/a | `string` | `"*"` | no |
-| <a name="input_cors_expose_headers"></a> [cors\_expose\_headers](#input\_cors\_expose\_headers) | n/a | `string` | `"Server,range,hdntl,hdnts,Akamai-Mon-Iucid-Ing,Akamai-Mon-Iucid-Del,Akamai-Request-BC"` | no |
-| <a name="input_cors_max_age"></a> [cors\_max\_age](#input\_cors\_max\_age) | n/a | `string` | `"86400"` | no |
+| <a name="input_client_country"></a> [client\_country](#input\_client\_country) | Client country, or UNKNOWN when not applicable. | `string` | `"UNKNOWN"` | no |
+| <a name="input_content_catalog_size"></a> [content\_catalog\_size](#input\_content\_catalog\_size) | Approximate size of the media catalog. | `string` | `"UNKNOWN"` | no |
+| <a name="input_content_popularity_distribution"></a> [content\_popularity\_distribution](#input\_content\_popularity\_distribution) | Expected popularity distribution of content requests. | `string` | `"UNKNOWN"` | no |
+| <a name="input_content_type"></a> [content\_type](#input\_content\_type) | Primary content resolution, such as HD, SD, or 4K. | `string` | `"HD"` | no |
 | <a name="input_cpcode_name"></a> [cpcode\_name](#input\_cpcode\_name) | Name for the CP code created for this property. Defaults to the property name if not set. | `string` | `null` | no |
 | <a name="input_customer_email"></a> [customer\_email](#input\_customer\_email) | Customer contact email. Required when noncompliance\_reason is ["NONE"]. | `string` | `null` | no |
-| <a name="input_dash_media_encryption"></a> [dash\_media\_encryption](#input\_dash\_media\_encryption) | n/a | `bool` | `false` | no |
+| <a name="input_dash_media_encryption"></a> [dash\_media\_encryption](#input\_dash\_media\_encryption) | Enable DASH media encryption when segmented content protection is enabled. | `bool` | `false` | no |
 | <a name="input_debug_key"></a> [debug\_key](#input\_debug\_key) | Optional enhanced-debug key. If omitted while debug is enabled, Terraform generates a stable key. | `string` | `null` | no |
-| <a name="input_edge_hostname_type"></a> [edge\_hostname\_type](#input\_edge\_hostname\_type) | Edge hostname mode: SBD (Secure By Default, no cert needed), EDGESUITE (aka Freeflow, <hostname>.edgesuite.net), EDGEKEY (aka ESSL, <hostname>.edgekey.net), or AKAMAIZED\_HOSTNAME (<label>.akamaized.net, hostname and edge hostname are identical). | `string` | `"SBD"` | no |
-| <a name="input_enable_cors_policy"></a> [enable\_cors\_policy](#input\_enable\_cors\_policy) | n/a | `bool` | `true` | no |
-| <a name="input_enable_dash"></a> [enable\_dash](#input\_enable\_dash) | n/a | `bool` | `true` | no |
-| <a name="input_enable_debug"></a> [enable\_debug](#input\_enable\_debug) | n/a | `bool` | `true` | no |
-| <a name="input_enable_dynamic_throughput_optimization"></a> [enable\_dynamic\_throughput\_optimization](#input\_enable\_dynamic\_throughput\_optimization) | n/a | `bool` | `true` | no |
-| <a name="input_enable_hds"></a> [enable\_hds](#input\_enable\_hds) | n/a | `bool` | `true` | no |
-| <a name="input_enable_hls"></a> [enable\_hls](#input\_enable\_hls) | n/a | `bool` | `true` | no |
-| <a name="input_enable_http3"></a> [enable\_http3](#input\_enable\_http3) | n/a | `bool` | `true` | no |
-| <a name="input_enable_segmented_content_protection"></a> [enable\_segmented\_content\_protection](#input\_enable\_segmented\_content\_protection) | n/a | `bool` | `false` | no |
-| <a name="input_enable_smooth"></a> [enable\_smooth](#input\_enable\_smooth) | n/a | `bool` | `true` | no |
+| <a name="input_edge_hostname_type"></a> [edge\_hostname\_type](#input\_edge\_hostname\_type) | Edge hostname mode: SBD (Secure By Default, no cert needed), EDGESUITE (aka Freeflow, <hostname>.edgesuite.net), EDGEKEY (aka ESSL, <hostname>.edgekey.net), or AKAMAIZED\_HOSTNAME (<label>.akamaized.net, hostname and edge hostname are identical). | `string` | `"AKAMAIZED_HOSTNAME"` | no |
+| <a name="input_enable_dash"></a> [enable\_dash](#input\_enable\_dash) | Whether DASH is a delivery format. | `bool` | `true` | no |
+| <a name="input_enable_debug"></a> [enable\_debug](#input\_enable\_debug) | Enable the enhanced\_debug behavior. | `bool` | `true` | no |
+| <a name="input_enable_dynamic_throughput_optimization"></a> [enable\_dynamic\_throughput\_optimization](#input\_enable\_dynamic\_throughput\_optimization) | Enable dynamic throughput optimization. | `bool` | `true` | no |
+| <a name="input_enable_hds"></a> [enable\_hds](#input\_enable\_hds) | Whether HDS is a delivery format. | `bool` | `true` | no |
+| <a name="input_enable_hls"></a> [enable\_hls](#input\_enable\_hls) | Whether HLS is a delivery format. | `bool` | `true` | no |
+| <a name="input_enable_http3"></a> [enable\_http3](#input\_enable\_http3) | Enable HTTP/3 (QUIC). | `bool` | `true` | no |
+| <a name="input_enable_segmented_content_protection"></a> [enable\_segmented\_content\_protection](#input\_enable\_segmented\_content\_protection) | Enable segmented content protection and media encryption. | `bool` | `false` | no |
+| <a name="input_enable_smooth"></a> [enable\_smooth](#input\_enable\_smooth) | Whether Smooth Streaming is a delivery format. | `bool` | `true` | no |
 | <a name="input_etls"></a> [etls](#input\_etls) | Security profile selector: SBD uses edgekey.net when true or edgesuite.net when false; EDGEKEY and AKAMAIZED\_HOSTNAME require true; EDGESUITE requires false. | `bool` | `true` | no |
-| <a name="input_forward_host_header"></a> [forward\_host\_header](#input\_forward\_host\_header) | n/a | `string` | `"REQUEST_HOST_HEADER"` | no |
-| <a name="input_hls_media_encryption"></a> [hls\_media\_encryption](#input\_hls\_media\_encryption) | n/a | `bool` | `false` | no |
-| <a name="input_http2_enabled"></a> [http2\_enabled](#input\_http2\_enabled) | n/a | `bool` | `true` | no |
-| <a name="input_ip_behavior"></a> [ip\_behavior](#input\_ip\_behavior) | IP version behavior for the edge hostname: IPV4, IPV6\_COMPLIANCE, or IPV6\_PERFORMANCE. | `string` | `"IPV4"` | no |
-| <a name="input_min_tls_version"></a> [min\_tls\_version](#input\_min\_tls\_version) | n/a | `string` | `"DYNAMIC"` | no |
+| <a name="input_forward_host_header"></a> [forward\_host\_header](#input\_forward\_host\_header) | Host header forwarded to the origin. | `string` | `"REQUEST_HOST_HEADER"` | no |
+| <a name="input_hls_media_encryption"></a> [hls\_media\_encryption](#input\_hls\_media\_encryption) | Enable HLS media encryption when segmented content protection is enabled. | `bool` | `false` | no |
+| <a name="input_http2_enabled"></a> [http2\_enabled](#input\_http2\_enabled) | Enable HTTP/2 between edge and origin. | `bool` | `true` | no |
+| <a name="input_ip_behavior"></a> [ip\_behavior](#input\_ip\_behavior) | IP version behavior for the edge hostname: IPV4 or IPV6\_COMPLIANCE. | `string` | `"IPV4"` | no |
+| <a name="input_min_tls_version"></a> [min\_tls\_version](#input\_min\_tls\_version) | Minimum TLS version for origin connections. | `string` | `"DYNAMIC"` | no |
 | <a name="input_noncompliance_reason"></a> [noncompliance\_reason](#input\_noncompliance\_reason) | Compliance record marker for production activation. Allowed values: NONE, OTHER, NO\_PRODUCTION\_TRAFFIC, EMERGENCY. Required (exactly one value) when activate\_to\_production is true. | `list(string)` | `[]` | no |
-| <a name="input_origin_authentication_method"></a> [origin\_authentication\_method](#input\_origin\_authentication\_method) | n/a | `string` | `"AUTOMATIC"` | no |
-| <a name="input_origin_country"></a> [origin\_country](#input\_origin\_country) | n/a | `string` | `"UNKNOWN"` | no |
+| <a name="input_origin_authentication_method"></a> [origin\_authentication\_method](#input\_origin\_authentication\_method) | Authentication method used to reach the origin. | `string` | `"AUTOMATIC"` | no |
+| <a name="input_origin_country"></a> [origin\_country](#input\_origin\_country) | Country of the origin, or UNKNOWN when not applicable. | `string` | `"UNKNOWN"` | no |
 | <a name="input_other_noncompliance_reason"></a> [other\_noncompliance\_reason](#input\_other\_noncompliance\_reason) | Free-text explanation. Required when noncompliance\_reason is ["OTHER"]. | `string` | `null` | no |
 | <a name="input_peer_reviewed_by"></a> [peer\_reviewed\_by](#input\_peer\_reviewed\_by) | Peer reviewer identity. Required when noncompliance\_reason is ["NONE"] (i.e. full standard review trail, no exception being invoked). | `string` | `null` | no |
 | <a name="input_product_id"></a> [product\_id](#input\_product\_id) | Akamai product ID for this property. | `string` | `"prd_Adaptive_Media_Delivery"` | no |
-| <a name="input_segment_duration_dash"></a> [segment\_duration\_dash](#input\_segment\_duration\_dash) | n/a | `string` | `"SEGMENT_DURATION_6S"` | no |
-| <a name="input_segment_duration_hds"></a> [segment\_duration\_hds](#input\_segment\_duration\_hds) | n/a | `string` | `"SEGMENT_DURATION_6S"` | no |
-| <a name="input_segment_duration_hls"></a> [segment\_duration\_hls](#input\_segment\_duration\_hls) | n/a | `string` | `"SEGMENT_DURATION_10S"` | no |
-| <a name="input_segment_duration_smooth"></a> [segment\_duration\_smooth](#input\_segment\_duration\_smooth) | n/a | `string` | `"SEGMENT_DURATION_2S"` | no |
-| <a name="input_segmented_media_optimization_behavior"></a> [segmented\_media\_optimization\_behavior](#input\_segmented\_media\_optimization\_behavior) | n/a | `string` | `"ON_DEMAND"` | no |
+| <a name="input_segment_duration_dash"></a> [segment\_duration\_dash](#input\_segment\_duration\_dash) | Segment duration for DASH content. | `string` | `"SEGMENT_DURATION_6S"` | no |
+| <a name="input_segment_duration_hds"></a> [segment\_duration\_hds](#input\_segment\_duration\_hds) | Segment duration for HDS content. | `string` | `"SEGMENT_DURATION_6S"` | no |
+| <a name="input_segment_duration_hls"></a> [segment\_duration\_hls](#input\_segment\_duration\_hls) | Segment duration for HLS content. | `string` | `"SEGMENT_DURATION_10S"` | no |
+| <a name="input_segment_duration_smooth"></a> [segment\_duration\_smooth](#input\_segment\_duration\_smooth) | Segment duration for Smooth Streaming content. | `string` | `"SEGMENT_DURATION_2S"` | no |
+| <a name="input_segmented_media_optimization_behavior"></a> [segmented\_media\_optimization\_behavior](#input\_segmented\_media\_optimization\_behavior) | Segmented media optimization mode: ON\_DEMAND or LIVE. | `string` | `"ON_DEMAND"` | no |
 | <a name="input_ticket_id"></a> [ticket\_id](#input\_ticket\_id) | Change/ticket ID. Required whenever activate\_to\_production is true (all four reasons require it). | `string` | `null` | no |
 | <a name="input_unit_tested"></a> [unit\_tested](#input\_unit\_tested) | Whether the change has been unit tested. Required when noncompliance\_reason is ["NONE"]. | `bool` | `null` | no |
-| <a name="input_verification_mode"></a> [verification\_mode](#input\_verification\_mode) | n/a | `string` | `"PLATFORM_SETTINGS"` | no |
+| <a name="input_verification_mode"></a> [verification\_mode](#input\_verification\_mode) | Origin certificate verification mode. | `string` | `"PLATFORM_SETTINGS"` | no |
 | <a name="input_version_notes"></a> [version\_notes](#input\_version\_notes) | Property version notes. | `string` | `"Initial Config"` | no |
 
 ## Outputs

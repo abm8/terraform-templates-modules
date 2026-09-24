@@ -103,9 +103,14 @@ variable "certificate_id" {
 }
 
 variable "ip_behavior" {
-  description = "IP version behavior for the edge hostname: IPV4, IPV6_COMPLIANCE, or IPV6_PERFORMANCE."
+  description = "IP version behavior for the edge hostname: IPV4 or IPV6_COMPLIANCE."
   type        = string
   default     = "IPV4"
+
+  validation {
+    condition     = contains(["IPV4", "IPV6_COMPLIANCE"], var.ip_behavior)
+    error_message = "ip_behavior must be IPV4 or IPV6_COMPLIANCE."
+  }
 }
 
 ### Activation ############################################################
@@ -235,7 +240,8 @@ variable "etls" {
 }
 
 variable "default_origin" {
-  type = string
+  description = "Origin hostname from where AMD fetches content."
+  type        = string
 }
 
 variable "additional_origins" {
@@ -250,133 +256,159 @@ variable "additional_origins" {
 }
 
 variable "forward_host_header" {
-  type    = string
-  default = "REQUEST_HOST_HEADER"
+  description = "Host header forwarded to the origin."
+  type        = string
+  default     = "REQUEST_HOST_HEADER"
 }
 
 variable "http2_enabled" {
-  type    = bool
-  default = true
+  description = "Enable HTTP/2 between edge and origin."
+  type        = bool
+  default     = true
 }
 
 variable "min_tls_version" {
-  type    = string
-  default = "DYNAMIC"
+  description = "Minimum TLS version for origin connections."
+  type        = string
+  default     = "DYNAMIC"
 }
 
 variable "verification_mode" {
-  type    = string
-  default = "PLATFORM_SETTINGS"
+  description = "Origin certificate verification mode."
+  type        = string
+  default     = "PLATFORM_SETTINGS"
 }
 
 variable "segmented_media_optimization_behavior" {
-  type    = string
-  default = "ON_DEMAND"
+  description = "Segmented media optimization mode: ON_DEMAND or LIVE."
+  type        = string
+  default     = "ON_DEMAND"
 }
 
 variable "origin_authentication_method" {
-  type    = string
-  default = "AUTOMATIC"
+  description = "Authentication method used to reach the origin."
+  type        = string
+  default     = "AUTOMATIC"
 }
 
 variable "origin_country" {
-  type    = string
-  default = "UNKNOWN"
+  description = "Country of the origin, or UNKNOWN when not applicable."
+  type        = string
+  default     = "UNKNOWN"
 }
 
 variable "client_country" {
-  type    = string
-  default = "UNKNOWN"
+  description = "Client country, or UNKNOWN when not applicable."
+  type        = string
+  default     = "UNKNOWN"
 }
 
 variable "content_catalog_size" {
-  type    = string
-  default = "UNKNOWN"
+  description = "Approximate size of the media catalog."
+  type        = string
+  default     = "UNKNOWN"
 }
 
 variable "content_type" {
-  type    = string
-  default = "HD"
+  description = "Primary content resolution, such as HD, SD, or 4K."
+  type        = string
+  default     = "HD"
 }
 
 variable "content_popularity_distribution" {
-  type    = string
-  default = "UNKNOWN"
+  description = "Expected popularity distribution of content requests."
+  type        = string
+  default     = "UNKNOWN"
 }
 
 variable "enable_dash" {
-  type    = bool
-  default = true
+  description = "Whether DASH is a delivery format."
+  type        = bool
+  default     = true
 }
 
 variable "enable_hds" {
-  type    = bool
-  default = true
+  description = "Whether HDS is a delivery format."
+  type        = bool
+  default     = true
 }
 
 variable "enable_hls" {
-  type    = bool
-  default = true
+  description = "Whether HLS is a delivery format."
+  type        = bool
+  default     = true
 }
 
 variable "enable_smooth" {
-  type    = bool
-  default = true
+  description = "Whether Smooth Streaming is a delivery format."
+  type        = bool
+  default     = true
 }
 
 variable "segment_duration_dash" {
-  type    = string
-  default = "SEGMENT_DURATION_6S"
+  description = "Segment duration for DASH content."
+  type        = string
+  default     = "SEGMENT_DURATION_6S"
 }
 
 variable "segment_duration_hds" {
-  type    = string
-  default = "SEGMENT_DURATION_6S"
+  description = "Segment duration for HDS content."
+  type        = string
+  default     = "SEGMENT_DURATION_6S"
 }
 
 variable "segment_duration_hls" {
-  type    = string
-  default = "SEGMENT_DURATION_10S"
+  description = "Segment duration for HLS content."
+  type        = string
+  default     = "SEGMENT_DURATION_10S"
 }
 
 variable "segment_duration_smooth" {
-  type    = string
-  default = "SEGMENT_DURATION_2S"
+  description = "Segment duration for Smooth Streaming content."
+  type        = string
+  default     = "SEGMENT_DURATION_2S"
 }
 
 variable "cache_key_query_params_behavior" {
-  type    = string
-  default = "IGNORE_ALL"
+  description = "How query parameters are handled in the cache key."
+  type        = string
+  default     = "IGNORE_ALL"
 }
 
 variable "enable_dynamic_throughput_optimization" {
-  type    = bool
-  default = true
+  description = "Enable dynamic throughput optimization."
+  type        = bool
+  default     = true
 }
 
 variable "enable_http3" {
-  type    = bool
-  default = true
+  description = "Enable HTTP/3 (QUIC)."
+  type        = bool
+  default     = true
 }
 
 variable "enable_segmented_content_protection" {
-  type    = bool
-  default = false
+  description = "Enable segmented content protection and media encryption."
+  type        = bool
+  default     = false
 }
 
 variable "dash_media_encryption" {
-  type    = bool
-  default = false
+  description = "Enable DASH media encryption when segmented content protection is enabled."
+  type        = bool
+  default     = false
 }
 
 variable "hls_media_encryption" {
-  type    = bool
-  default = false
+  description = "Enable HLS media encryption when segmented content protection is enabled."
+  type        = bool
+  default     = false
 }
 
 variable "enable_debug" {
-  type    = bool
-  default = true
+  description = "Enable the enhanced_debug behavior."
+  type        = bool
+  default     = true
 }
 
 variable "debug_key" {
@@ -389,39 +421,4 @@ variable "debug_key" {
     condition     = var.debug_key == null || can(regex("^[0-9a-fA-F]{64}$", var.debug_key))
     error_message = "debug_key must be exactly 64 hexadecimal characters."
   }
-}
-
-variable "enable_cors_policy" {
-  type    = bool
-  default = true
-}
-
-variable "cors_allow_origin" {
-  type    = string
-  default = "*"
-}
-
-variable "cors_allow_methods" {
-  type    = string
-  default = "GET,POST,OPTIONS"
-}
-
-variable "cors_allow_headers" {
-  type    = string
-  default = "origin,range,hdntl,hdnts,CMCD-Request,CMCD-Object,CMCD-Status,CMCD-Session"
-}
-
-variable "cors_expose_headers" {
-  type    = string
-  default = "Server,range,hdntl,hdnts,Akamai-Mon-Iucid-Ing,Akamai-Mon-Iucid-Del,Akamai-Request-BC"
-}
-
-variable "cors_allow_credentials" {
-  type    = string
-  default = "true"
-}
-
-variable "cors_max_age" {
-  type    = string
-  default = "86400"
 }

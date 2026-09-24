@@ -5,7 +5,7 @@
 Renders the default rule tree for an Adaptive Media Delivery property:
 origin config, CP code, AMD-specific behaviors (segmented media
 optimization, content characteristics, throughput optimization, HTTP/3,
-optional debug), plus an optional CORS policy child rule.
+optional debug), plus the default CORS policy child rule.
 
 # Usage
 Basic usage of this module is as follows:
@@ -21,25 +21,18 @@ module "example" {
   
 	 # Optional variables
   	 additional_origins  = <map(object({
-    origin_name         = string
-    forward_host_header = string
-    hostname_match      = list(string)
-    path_match          = list(string)
-  }))> | default: {}
+	    origin_name         = string
+	    forward_host_header = string
+	    hostname_match      = list(string)
+	    path_match          = list(string)
+	  }))> | default: {}
   	 cache_key_query_params_behavior  = <string> | default: "IGNORE_ALL"
   	 client_country  = <string> | default: "UNKNOWN"
   	 content_catalog_size  = <string> | default: "UNKNOWN"
   	 content_popularity_distribution  = <string> | default: "UNKNOWN"
   	 content_type  = <string> | default: "HD"
-  	 cors_allow_credentials  = <string> | default: "true"
-  	 cors_allow_headers  = <string> | default: "origin,range,hdntl,hdnts,CMCD-Request,CMCD-Object,CMCD-Status,CMCD-Session"
-  	 cors_allow_methods  = <string> | default: "GET,POST,OPTIONS"
-  	 cors_allow_origin  = <string> | default: "*"
-  	 cors_expose_headers  = <string> | default: "Server,range,hdntl,hdnts,Akamai-Mon-Iucid-Ing,Akamai-Mon-Iucid-Del,Akamai-Request-BC"
-  	 cors_max_age  = <string> | default: "86400"
   	 dash_media_encryption  = <bool> | default: false
   	 debug_key  = <string> | default: null
-  	 enable_cors_policy  = <bool> | default: true
   	 enable_dash  = <bool> | default: true
   	 enable_debug  = <bool> | default: false
   	 enable_dynamic_throughput_optimization  = <bool> | default: true
@@ -48,7 +41,7 @@ module "example" {
   	 enable_http3  = <bool> | default: true
   	 enable_segmented_content_protection  = <bool> | default: false
   	 enable_smooth  = <bool> | default: true
-  	 etls  = <bool> | default: true
+	 etls  = <bool> | default: false
   	 forward_host_header  = <string> | default: "REQUEST_HOST_HEADER"
   	 hls_media_encryption  = <bool> | default: false
   	 http2_enabled  = <bool> | default: true
@@ -62,7 +55,7 @@ module "example" {
   	 segmented_media_optimization_behavior  = <string> | default: "ON_DEMAND"
   	 verification_mode  = <string> | default: "PLATFORM_SETTINGS"
 }
- ```
+```
 
 ## Requirements
 
@@ -90,22 +83,15 @@ No modules.
 | ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_cpcode_id"></a> [cpcode\_id](#input\_cpcode\_id) | Numeric ID of the CP code created by the parent module, used for reporting/billing. | `number` | n/a | yes |
 | <a name="input_cpcode_name"></a> [cpcode\_name](#input\_cpcode\_name) | Name of the CP code created by the parent module. | `string` | n/a | yes |
-| <a name="input_default_origin"></a> [default\_origin](#input\_default\_origin) | Origin hostname AMD will fetch content from. | `string` | n/a | yes |
+| <a name="input_default_origin"></a> [default\_origin](#input\_default\_origin) | Origin hostname from where AMD will fetch the content. | `string` | n/a | yes |
 | <a name="input_additional_origins"></a> [additional\_origins](#input\_additional\_origins) | Optional additional origins selected by hostname and/or path criteria. | <pre>map(object({<br/>    origin_name         = string<br/>    forward_host_header = string<br/>    hostname_match      = list(string)<br/>    path_match          = list(string)<br/>  }))</pre> | `{}` | no |
 | <a name="input_cache_key_query_params_behavior"></a> [cache\_key\_query\_params\_behavior](#input\_cache\_key\_query\_params\_behavior) | How query parameters are treated in the cache key. | `string` | `"IGNORE_ALL"` | no |
 | <a name="input_client_country"></a> [client\_country](#input\_client\_country) | Country used for client\_characteristics. UNKNOWN if not applicable. | `string` | `"UNKNOWN"` | no |
 | <a name="input_content_catalog_size"></a> [content\_catalog\_size](#input\_content\_catalog\_size) | Approximate size of the media catalog served by this property. | `string` | `"UNKNOWN"` | no |
 | <a name="input_content_popularity_distribution"></a> [content\_popularity\_distribution](#input\_content\_popularity\_distribution) | Expected popularity distribution of content requests. | `string` | `"UNKNOWN"` | no |
 | <a name="input_content_type"></a> [content\_type](#input\_content\_type) | Primary content resolution/type served (e.g. HD, SD, 4K). | `string` | `"HD"` | no |
-| <a name="input_cors_allow_credentials"></a> [cors\_allow\_credentials](#input\_cors\_allow\_credentials) | Value for Access-Control-Allow-Credentials. | `string` | `"true"` | no |
-| <a name="input_cors_allow_headers"></a> [cors\_allow\_headers](#input\_cors\_allow\_headers) | Value for Access-Control-Allow-Headers. | `string` | `"origin,range,hdntl,hdnts,CMCD-Request,CMCD-Object,CMCD-Status,CMCD-Session"` | no |
-| <a name="input_cors_allow_methods"></a> [cors\_allow\_methods](#input\_cors\_allow\_methods) | Value for Access-Control-Allow-Methods. | `string` | `"GET,POST,OPTIONS"` | no |
-| <a name="input_cors_allow_origin"></a> [cors\_allow\_origin](#input\_cors\_allow\_origin) | Value for Access-Control-Allow-Origin. | `string` | `"*"` | no |
-| <a name="input_cors_expose_headers"></a> [cors\_expose\_headers](#input\_cors\_expose\_headers) | Value for Access-Control-Expose-Headers. | `string` | `"Server,range,hdntl,hdnts,Akamai-Mon-Iucid-Ing,Akamai-Mon-Iucid-Del,Akamai-Request-BC"` | no |
-| <a name="input_cors_max_age"></a> [cors\_max\_age](#input\_cors\_max\_age) | Value for Access-Control-Max-Age, in seconds. | `string` | `"86400"` | no |
 | <a name="input_dash_media_encryption"></a> [dash\_media\_encryption](#input\_dash\_media\_encryption) | Enable DASH media encryption. Only applies when enable\_segmented\_content\_protection is true. | `bool` | `false` | no |
 | <a name="input_debug_key"></a> [debug\_key](#input\_debug\_key) | Debug key for enhanced\_debug. Required only when enable\_debug is true. Treat as sensitive -- pass via TF\_VAR\_debug\_key or a secrets-managed tfvars file, never commit it. | `string` | `null` | no |
-| <a name="input_enable_cors_policy"></a> [enable\_cors\_policy](#input\_enable\_cors\_policy) | Whether to attach the default CORS policy child rule. | `bool` | `true` | no |
 | <a name="input_enable_dash"></a> [enable\_dash](#input\_enable\_dash) | Whether DASH is a delivery format for this property. | `bool` | `true` | no |
 | <a name="input_enable_debug"></a> [enable\_debug](#input\_enable\_debug) | Enable the enhanced\_debug behavior. Off by default -- avoid baking a live debug key into every property. | `bool` | `false` | no |
 | <a name="input_enable_dynamic_throughput_optimization"></a> [enable\_dynamic\_throughput\_optimization](#input\_enable\_dynamic\_throughput\_optimization) | Enable dynamic throughput optimization for adaptive bitrate delivery. | `bool` | `true` | no |
@@ -114,7 +100,7 @@ No modules.
 | <a name="input_enable_http3"></a> [enable\_http3](#input\_enable\_http3) | Enable HTTP/3 (QUIC) support. | `bool` | `true` | no |
 | <a name="input_enable_segmented_content_protection"></a> [enable\_segmented\_content\_protection](#input\_enable\_segmented\_content\_protection) | Master toggle for segmented content protection (token auth, media encryption). | `bool` | `false` | no |
 | <a name="input_enable_smooth"></a> [enable\_smooth](#input\_enable\_smooth) | Whether Smooth Streaming is a delivery format for this property. | `bool` | `true` | no |
-| <a name="input_etls"></a> [etls](#input\_etls) | Whether the property uses Enhanced TLS (is\_secure on the default rule). | `bool` | `true` | no |
+| <a name="input_etls"></a> [etls](#input\_etls) | Whether the property uses Enhanced TLS (is\_secure on the default rule). | `bool` | `false` | no |
 | <a name="input_forward_host_header"></a> [forward\_host\_header](#input\_forward\_host\_header) | Value forwarded as the Host header to origin. Use REQUEST\_HOST\_HEADER, ORIGIN\_HOSTNAME, or a custom hostname. | `string` | `"REQUEST_HOST_HEADER"` | no |
 | <a name="input_hls_media_encryption"></a> [hls\_media\_encryption](#input\_hls\_media\_encryption) | Enable HLS media encryption. Only applies when enable\_segmented\_content\_protection is true. | `bool` | `false` | no |
 | <a name="input_http2_enabled"></a> [http2\_enabled](#input\_http2\_enabled) | Enable HTTP/2 between edge and origin. | `bool` | `true` | no |
