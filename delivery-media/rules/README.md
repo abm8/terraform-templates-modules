@@ -21,11 +21,11 @@ module "example" {
   
 	 # Optional variables
   	 additional_origins  = <map(object({
-	    origin_name         = string
-	    forward_host_header = string
-	    hostname_match      = list(string)
-	    path_match          = list(string)
-	  }))> | default: {}
+    origin_name         = string
+    forward_host_header = string
+    hostname_match      = list(string)
+    path_match          = list(string)
+  }))> | default: {}
   	 cache_key_query_params_behavior  = <string> | default: "IGNORE_ALL"
   	 client_country  = <string> | default: "UNKNOWN"
   	 content_catalog_size  = <string> | default: "UNKNOWN"
@@ -41,7 +41,7 @@ module "example" {
   	 enable_http3  = <bool> | default: true
   	 enable_segmented_content_protection  = <bool> | default: false
   	 enable_smooth  = <bool> | default: true
-	 etls  = <bool> | default: false
+  	 etls  = <bool> | default: false
   	 forward_host_header  = <string> | default: "REQUEST_HOST_HEADER"
   	 hls_media_encryption  = <bool> | default: false
   	 http2_enabled  = <bool> | default: true
@@ -55,7 +55,7 @@ module "example" {
   	 segmented_media_optimization_behavior  = <string> | default: "ON_DEMAND"
   	 verification_mode  = <string> | default: "PLATFORM_SETTINGS"
 }
-```
+ ```
 
 ## Requirements
 

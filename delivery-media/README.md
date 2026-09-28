@@ -28,11 +28,11 @@ module "example" {
   	 activation_to_production_exists  = <bool> | default: false
   	 activation_to_staging_exists  = <bool> | default: false
   	 additional_origins  = <map(object({
-	    origin_name         = string
-	    forward_host_header = string
-	    hostname_match      = list(string)
-	    path_match          = list(string)
-	  }))> | default: {}
+    origin_name         = string
+    forward_host_header = string
+    hostname_match      = list(string)
+    path_match          = list(string)
+  }))> | default: {}
   	 cache_key_query_params_behavior  = <string> | default: "IGNORE_ALL"
   	 certificate_id  = <number> | default: null
   	 client_country  = <string> | default: "UNKNOWN"
@@ -43,9 +43,9 @@ module "example" {
   	 customer_email  = <string> | default: null
   	 dash_media_encryption  = <bool> | default: false
   	 debug_key  = <string> | default: null
-	 edge_hostname_type  = <string> | default: "AKAMAIZED_HOSTNAME"
+  	 edge_hostname_type  = <string> | default: "AKAMAIZED_HOSTNAME"
   	 enable_dash  = <bool> | default: true
-	 enable_debug  = <bool> | default: false
+  	 enable_debug  = <bool> | default: false
   	 enable_dynamic_throughput_optimization  = <bool> | default: true
   	 enable_hds  = <bool> | default: true
   	 enable_hls  = <bool> | default: true
@@ -74,7 +74,7 @@ module "example" {
   	 verification_mode  = <string> | default: "PLATFORM_SETTINGS"
   	 version_notes  = <string> | default: "Initial Config"
 }
-```
+ ```
 
 ## Requirements
 
