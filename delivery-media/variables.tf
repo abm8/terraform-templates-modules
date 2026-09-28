@@ -151,84 +151,42 @@ variable "activation_contacts" {
 }
 
 ### Production compliance / change-management #############################
-# Mirrors the ION new-property compliance_record pattern: required fields
-# vary by noncompliance_reason when activating straight to production.
+# Fields forwarded to the akamai_property_activation compliance_record block.
 
 variable "noncompliance_reason" {
-  description = "Compliance record marker for production activation. Allowed values: NONE, OTHER, NO_PRODUCTION_TRAFFIC, EMERGENCY. Required (exactly one value) when activate_to_production is true."
+  description = "Compliance record marker for production activation. Allowed values: NONE, OTHER, NO_PRODUCTION_TRAFFIC, EMERGENCY."
   type        = list(string)
   default     = []
-
-  validation {
-    condition = (
-      !var.activate_to_production ||
-      (
-        length(var.noncompliance_reason) == 1 &&
-        (
-          contains(var.noncompliance_reason, "NONE") ||
-          contains(var.noncompliance_reason, "OTHER") ||
-          contains(var.noncompliance_reason, "NO_PRODUCTION_TRAFFIC") ||
-          contains(var.noncompliance_reason, "EMERGENCY")
-        )
-      )
-    )
-    error_message = "When activate_to_production is true, noncompliance_reason must contain exactly one of NONE, OTHER, NO_PRODUCTION_TRAFFIC, EMERGENCY."
-  }
 }
 
 variable "ticket_id" {
-  description = "Change/ticket ID. Required whenever activate_to_production is true (all four reasons require it)."
+  description = "Change/ticket ID for production activation."
   type        = string
   default     = null
-
-  validation {
-    condition     = !var.activate_to_production || var.ticket_id != null
-    error_message = "ticket_id is required when activate_to_production is true."
-  }
 }
 
 variable "other_noncompliance_reason" {
-  description = "Free-text explanation. Required when noncompliance_reason is [\"OTHER\"]."
+  description = "Free-text explanation used when noncompliance_reason is [\"OTHER\"]."
   type        = string
   default     = null
-
-  validation {
-    condition     = !var.activate_to_production || !contains(var.noncompliance_reason, "OTHER") || var.other_noncompliance_reason != null
-    error_message = "other_noncompliance_reason is required when noncompliance_reason is [\"OTHER\"]."
-  }
 }
 
 variable "peer_reviewed_by" {
-  description = "Peer reviewer identity. Required when noncompliance_reason is [\"NONE\"] (i.e. full standard review trail, no exception being invoked)."
+  description = "Peer reviewer identity used when noncompliance_reason is [\"NONE\"]."
   type        = string
   default     = null
-
-  validation {
-    condition     = !var.activate_to_production || !contains(var.noncompliance_reason, "NONE") || var.peer_reviewed_by != null
-    error_message = "peer_reviewed_by is required when noncompliance_reason is [\"NONE\"]."
-  }
 }
 
 variable "customer_email" {
-  description = "Customer contact email. Required when noncompliance_reason is [\"NONE\"]."
+  description = "Customer contact email used when noncompliance_reason is [\"NONE\"]."
   type        = string
   default     = null
-
-  validation {
-    condition     = !var.activate_to_production || !contains(var.noncompliance_reason, "NONE") || var.customer_email != null
-    error_message = "customer_email is required when noncompliance_reason is [\"NONE\"]."
-  }
 }
 
 variable "unit_tested" {
-  description = "Whether the change has been unit tested. Required when noncompliance_reason is [\"NONE\"]."
+  description = "Whether the change has been unit tested. Used when noncompliance_reason is [\"NONE\"]."
   type        = bool
   default     = null
-
-  validation {
-    condition     = !var.activate_to_production || !contains(var.noncompliance_reason, "NONE") || var.unit_tested != null
-    error_message = "unit_tested is required when noncompliance_reason is [\"NONE\"]."
-  }
 }
 
 ### Rules passthrough (forwarded to the rules submodule) ##################
@@ -406,9 +364,9 @@ variable "hls_media_encryption" {
 }
 
 variable "enable_debug" {
-  description = "Enable the enhanced_debug behavior."
+  description = "Enable the enhanced_debug behavior. Off by default; set to true in tfvars to enable."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "debug_key" {
