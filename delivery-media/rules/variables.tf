@@ -24,9 +24,9 @@ variable "additional_origins" {
   validation {
     condition = alltrue([
       for origin in values(var.additional_origins) :
-      try(length(origin.hostname_match), 0) > 0 || try(length(origin.path_match), 0) > 0
+      try(length(origin.hostname_match) > 0, false) || try(length(origin.path_match) > 0, false)
     ])
-    error_message = "Each additional origin must define at least one hostname_match or path_match value."
+    error_message = "Each additional origin must specify at least one non-empty hostname_match or path_match list."
   }
 }
 

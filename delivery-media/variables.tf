@@ -211,6 +211,14 @@ variable "additional_origins" {
     path_match          = list(string)
   }))
   default = {}
+
+  validation {
+    condition = alltrue([
+      for origin in values(var.additional_origins) :
+      try(length(origin.hostname_match) > 0, false) || try(length(origin.path_match) > 0, false)
+    ])
+    error_message = "Each additional origin must specify at least one non-empty hostname_match or path_match list."
+  }
 }
 
 variable "forward_host_header" {

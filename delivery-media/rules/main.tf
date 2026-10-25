@@ -8,7 +8,7 @@
  */
 
 data "akamai_property_rules_builder" "rule_default" {
-  rules_v2026_02_16 {
+  rules_v2026_07_21 {
     name      = "default"
     is_secure = var.etls
 
@@ -118,15 +118,12 @@ data "akamai_property_rules_builder" "rule_default" {
       }
     }
 
-    dynamic "behavior" {
-      for_each = var.enable_debug ? [1] : []
-      content {
-        enhanced_debug {
-          debug_key      = var.debug_key
-          disable_pragma = true
-          enable_debug   = true
-          generate_grn   = true
-        }
+    behavior {
+      enhanced_debug {
+        debug_key      = var.enable_debug ? var.debug_key : null
+        disable_pragma = var.enable_debug ? true : null
+        enable_debug   = var.enable_debug
+        generate_grn   = var.enable_debug ? true : null
       }
     }
 
@@ -136,6 +133,4 @@ data "akamai_property_rules_builder" "rule_default" {
     )
   }
 }
-
-
 

@@ -1,5 +1,5 @@
 data "akamai_property_rules_builder" "rule_cors_policy" {
-  rules_v2026_02_16 {
+  rules_v2026_07_21 {
     name                  = "Default CORS Policy"
     criteria_must_satisfy = "all"
 

@@ -1,7 +1,7 @@
 data "akamai_property_rules_builder" "rule_additional_origins" {
   count = length(var.additional_origins) > 0 ? 1 : 0
 
-  rules_v2026_02_16 {
+  rules_v2026_07_21 {
     name                  = "Origin Servers"
     comments              = "Routes matching requests to additional origin servers."
     criteria_must_satisfy = "all"
@@ -14,7 +14,7 @@ data "akamai_property_rules_builder" "rule_additional_origins" {
 data "akamai_property_rules_builder" "rule_additional_origin" {
   count = length(var.additional_origins)
 
-  rules_v2026_02_16 {
+  rules_v2026_07_21 {
     name                  = var.additional_origins[keys(var.additional_origins)[count.index]].origin_name
     criteria_must_satisfy = "all"
 
